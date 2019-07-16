@@ -11,12 +11,13 @@ import (
 	"strings"
 )
 
+// SortablePalette is a slice of color.Color that can be sorted with sort.Sort
 type SortablePalette []color.Color
 
 // Length from RGB (0, 0, 0)
 func colorLength(c color.Color) float64 {
-	r := c.(color.NRGBA)
-	return math.Sqrt(float64(r.R*r.R + r.G*r.G + r.B*r.B + r.A*r.A))
+	r := c.(color.RGBA)
+	return math.Sqrt(float64(r.R*r.R + r.G*r.G + r.B*r.B)) // + r.A*r.A))
 }
 
 func (a SortablePalette) Len() int           { return len(a) }
@@ -44,29 +45,32 @@ func median(colors []color.Color) (color.Color, error) {
 	// 3. If the numbers are even, select the two center one and take the average of those
 	centerPos1 := (len(sp) / 2) - 1
 	centerPos2 := len(sp) / 2
-	c1 := sp[centerPos1].(color.NRGBA)
-	c2 := sp[centerPos2].(color.NRGBA)
+	c1 := sp[centerPos1].(color.RGBA)
+	c2 := sp[centerPos2].(color.RGBA)
 	r := (c1.R + c2.R) / 2.0
 	g := (c1.G + c2.G) / 2.0
 	b := (c1.B + c2.B) / 2.0
 	a := (c1.A + c2.A) / 2.0
 	// return the new color
-	return color.NRGBA{r, g, b, a}, nil
+	return color.RGBA{r, g, b, a}, nil
 }
 
+// Generate can generate a palette with N colors, given an image
 func Generate(img image.Image, N int) (color.Palette, error) {
 	groups := make(map[int][]color.Color)
 	already := make(map[color.Color]bool)
 
+	// Pick out the colors from the image, per intensity level, and store them in the groups map
 	for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y++ {
 		for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x++ {
 			c := img.At(x, y)
-			gc := color.GrayModel.Convert(img.At(x, y)).(color.Gray)
+			gc := color.GrayModel.Convert(c).(color.Gray)
+			rgba := color.RGBAModel.Convert(c).(color.RGBA)
 			level := int(float64(gc.Y) / (255.0 / float64(N-1)))
-			alreadyColor, ok := already[c]
+			alreadyColor, ok := already[rgba]
 			if !alreadyColor || !ok {
-				groups[level] = append(groups[level], c)
-				already[c] = true
+				groups[level] = append(groups[level], rgba)
+				already[rgba] = true
 			}
 		}
 	}
@@ -100,7 +104,7 @@ func GPL(pal color.Palette, name string) string {
 	sb.WriteString("# xyproto/palgen\n")
 	// Output the colors
 	for i, c := range pal {
-		cn := c.(color.NRGBA)
+		cn := c.(color.RGBA)
 		sb.WriteString(fmt.Sprintf("%3d %3d %3d\t%d\n", cn.R, cn.G, cn.B, i))
 	}
 	// Return the generated string
