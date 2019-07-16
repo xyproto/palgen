@@ -26,7 +26,8 @@ func (a SortablePalette) Less(i, j int) bool { return colorLength(a[i]) < colorL
 
 // Median finds not the average but the median color
 func Median(colors []color.Color) (color.Color, error) {
-	if len(colors) == 0 {
+	length := len(colors)
+	if length == 0 {
 		return nil, errors.New("can't find the median of an empty slice of colors")
 	}
 	if len(colors) == 1 {
@@ -38,13 +39,13 @@ func Median(colors []color.Color) (color.Color, error) {
 	sort.Sort(sp)
 
 	// 2. Select the center one, if odd
-	if len(sp)%2 != 0 {
-		centerPos := len(sp) / 2
+	if length%2 != 0 {
+		centerPos := length / 2
 		return sp[centerPos], nil
 	}
 	// 3. If the numbers are even, select the two center one and take the average of those
-	centerPos1 := (len(sp) / 2) - 1
-	centerPos2 := len(sp) / 2
+	centerPos1 := (length / 2) - 1
+	centerPos2 := length / 2
 	c1 := sp[centerPos1].(color.RGBA)
 	c2 := sp[centerPos2].(color.RGBA)
 	r := (c1.R + c2.R) / 2.0
@@ -75,19 +76,17 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 		}
 	}
 
-	//fmt.Println(groups)
-
+	// Find the median color for each intensity level
 	var pal color.Palette
 	for _, colors := range groups {
-		//fmt.Printf("Colors, group %d:\n", i)
 		medianColor, err := Median(colors)
 		if err != nil {
 			return nil, err
 		}
-		//fmt.Println("\tmedian color", medianColor)
 		pal = append(pal, medianColor)
 	}
 
+	// Return the generated palette
 	return pal, nil
 }
 
