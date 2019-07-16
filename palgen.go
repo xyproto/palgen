@@ -5,7 +5,7 @@ import (
 	"image/color"
 )
 
-func Generate(img image.Image) color.Palette {
+func Generate(img image.Image, N int) color.Palette {
 	col := color.NRGBA{255, 0, 0, 0}
 	pal := color.Palette{col}
 	return pal

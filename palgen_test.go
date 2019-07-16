@@ -1,12 +1,12 @@
 package palgen
 
 import (
-	"fmt"
-	"testing"
-	"io"
 	"encoding/base64"
-	"strings"
+	"fmt"
 	"image/png"
+	"io"
+	"strings"
+	"testing"
 )
 
 // From https://golang.org/pkg/image/png/#Decode
@@ -20,6 +20,6 @@ func TestGenerate(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	pal := Generate(img)
-	fmt.Println("PALETTE", pal)
+	pal := Generate(img, 2)
+	fmt.Println("Palette with 2 colors", pal)
 }
