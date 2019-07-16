@@ -47,7 +47,7 @@ func TestSample(t *testing.T) {
 	}
 
 	// Output a .gpl palette file in testdata/output1.gpl
-	err = Write(pal, "testdata/output.gpl", "From sample.png")
+	err = Save(pal, "testdata/output.gpl", "From sample.png")
 	if err != nil {
 		t.Error(err)
 	}
@@ -73,7 +73,7 @@ func TestSample2(t *testing.T) {
 	}
 
 	// Output a .gpl palette file in testdata/output2.gpl
-	err = Write(pal, "testdata/output2.gpl", "From sample2.png")
+	err = Save(pal, "testdata/output2.gpl", "From sample2.png")
 	if err != nil {
 		t.Error(err)
 	}

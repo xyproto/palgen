@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-// SortablePalette is a slice of color.Color that can be sorted with sort.Sort
+// SortablePalette is a slice of color.Color that can be sorted with sort.Sort, by euclidian distance for R, G and B
 type SortablePalette []color.Color
 
 // Length from RGB (0, 0, 0)
@@ -24,8 +24,8 @@ func (a SortablePalette) Len() int           { return len(a) }
 func (a SortablePalette) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a SortablePalette) Less(i, j int) bool { return colorLength(a[i]) < colorLength(a[j]) }
 
-// median finds not the average but the median color
-func median(colors []color.Color) (color.Color, error) {
+// Median finds not the average but the median color
+func Median(colors []color.Color) (color.Color, error) {
 	if len(colors) == 0 {
 		return nil, errors.New("can't find the median of an empty slice of colors")
 	}
@@ -80,7 +80,7 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 	var pal color.Palette
 	for _, colors := range groups {
 		//fmt.Printf("Colors, group %d:\n", i)
-		medianColor, err := median(colors)
+		medianColor, err := Median(colors)
 		if err != nil {
 			return nil, err
 		}
@@ -111,8 +111,8 @@ func GPL(pal color.Palette, name string) string {
 	return sb.String()
 }
 
-// Write a palette to file in the GIMP Palette Format (.gpl)
+// Save a palette to file in the GIMP Palette Format (.gpl)
 // The given name will be used as the palette name in the header
-func Write(pal color.Palette, filename, name string) error {
+func Save(pal color.Palette, filename, name string) error {
 	return ioutil.WriteFile(filename, []byte(GPL(pal, name)), 0644)
 }
