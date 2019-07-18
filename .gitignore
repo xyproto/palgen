@@ -13,5 +13,6 @@
 
 testdata/*.gpl
 cmd/png256/png256
-cmd/gpl2png/gpl2png
+cmd/png2gpl/png2gpl
 cmd/png2palette/png2palette
+cmd/gpl2palette/gpl2palette
