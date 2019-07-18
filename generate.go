@@ -53,31 +53,39 @@ func Median(colors []color.Color) (color.Color, error) {
 	return color.RGBA{r, g, b, a}, nil
 }
 
-// Median2 finds not the average but the median color. Returns two colors if the number of colors is even.
-func Median2(colors []color.Color) (color.Color, color.Color, error) {
+// Median3 finds not the average but the median color. Returns three colors if the number of colors is even (average, first and second color in the center).
+func Median3(colors []color.Color) (color.Color, color.Color, color.Color, error) {
 	length := len(colors)
 	if length == 0 {
-		return nil, nil, errors.New("can't find the median of an empty slice of colors")
+		return nil, nil, nil, errors.New("can't find the median of an empty slice of colors")
 	}
 	if len(colors) == 1 {
-		return colors[0], colors[0], nil
+		return colors[0], colors[0], colors[0], nil
 	}
 
 	// 1. Sort the colors
 	sp := SortablePalette(colors)
 	sort.Sort(sp)
 
-	// 2. Select the center one, twice, if odd
+	// 2. Select the center one, if odd
 	if length%2 != 0 {
 		centerPos := length / 2
-		// Return the center color, twice
-		return sp[centerPos], sp[centerPos], nil
+		// Return the center color, thrice
+		return sp[centerPos], sp[centerPos], sp[centerPos], nil
 	}
-	// 3. If the numbers are even, select the two center ones and take the average of those
+	// 3. If the numbers are even, select the two center one and take the average of those
 	centerPos1 := (length / 2) - 1
 	centerPos2 := length / 2
-	// Return the two colors
-	return sp[centerPos1], sp[centerPos2], nil
+	c1 := sp[centerPos1].(color.RGBA)
+	c2 := sp[centerPos2].(color.RGBA)
+	r := (c1.R + c2.R) / 2.0
+	g := (c1.G + c2.G) / 2.0
+	b := (c1.B + c2.B) / 2.0
+	a := (c1.A + c2.A) / 2.0
+	averageColor := color.RGBA{r, g, b, a}
+
+	// Also return the two center colors
+	return averageColor, sp[centerPos1], sp[centerPos2], nil
 }
 
 // Generate can generate a palette with N colors, given an image
@@ -110,7 +118,7 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 	for _, colors := range groups {
 		// Find the median color of a group of colors of a certain intensity
 		//medianColor, err := Median(colors)
-		medianColor1, medianColor2, err := Median2(colors)
+		medianColor1, medianColor2, medianColor3, err := Median3(colors)
 		if err != nil {
 			return nil, err
 		}
@@ -120,11 +128,16 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 			pal = append(pal, medianColor1)
 			already[medianColor1] = true
 		}
-		// Add the medianColor2 to the extra palette, if it's not already in it
+		// Add medianColor2 and medianColor3 to the extra palette, if they are not already in it
 		alreadyColor2, ok := already2[medianColor2]
 		if !alreadyColor2 || !ok {
 			extrapal = append(extrapal, medianColor2)
 			already2[medianColor2] = true
+		}
+		alreadyColor2, ok = already2[medianColor3]
+		if !alreadyColor2 || !ok {
+			extrapal = append(extrapal, medianColor3)
+			already2[medianColor3] = true
 		}
 	}
 
