@@ -55,7 +55,7 @@ func TestSample(t *testing.T) {
 
 func TestSample2(t *testing.T) {
 	// Read a truecolor PNG file
-	data, err := os.Open("testdata/sample2.png")
+	data, err := os.Open("testdata/splash.png")
 	if err != nil {
 		t.Error(err)
 	}
@@ -73,7 +73,7 @@ func TestSample2(t *testing.T) {
 	}
 
 	// Output a .gpl palette file
-	err = Save(pal, "testdata/output2.gpl", "From sample2.png")
+	err = Save(pal, "testdata/splash.gpl", "From splash.png")
 	if err != nil {
 		t.Error(err)
 	}

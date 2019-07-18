@@ -9,7 +9,7 @@ import (
 
 func TestConvert(t *testing.T) {
 	// Read a truecolor PNG file
-	data, err := os.Open("testdata/tm.png")
+	data, err := os.Open("testdata/splash.png")
 	if err != nil {
 		t.Error(err)
 	}
@@ -37,7 +37,7 @@ func TestConvert(t *testing.T) {
 	}
 
 	// Output the indexed image
-	f, err := os.Create("testdata/tm256.png")
+	f, err := os.Create("testdata/splash256.png")
 	if err != nil {
 		t.Error(err)
 	}

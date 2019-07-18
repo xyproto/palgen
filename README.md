@@ -41,7 +41,7 @@ if err != nil {
 
 | 64x64 image, 8-bit/color RGB  | 64x64 image, 256 color palette selected by `palgen` |
 | --------------------------------- | -------------------------------- |
-| ![png](testdata/sample2.png)      | ![png](testdata/sample2_converted.png)   |
+| ![png](testdata/splash.png)      | ![png](testdata/splash_converted.png)   |
 
 ## General info
 

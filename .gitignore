@@ -12,3 +12,4 @@
 *.out
 
 testdata/*.gpl
+testdata/*256.png
