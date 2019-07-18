@@ -35,6 +35,12 @@ func main() {
 
 	// Open the PNG file
 	f, err := os.Open(inputFilename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
+		os.Exit(1)
+	}
+
+	// Decode the PNG file
 	m, err := png.Decode(f)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %s\n", err)
