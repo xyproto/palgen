@@ -101,7 +101,7 @@ func TestConvertFewColors(t *testing.T) {
 	}
 }
 
-func TestConvertStandard(t *testing.T) {
+func TestConvertGeneral(t *testing.T) {
 	// Read a truecolor PNG file
 	data, err := os.Open("testdata/splash.png")
 	if err != nil {
@@ -115,7 +115,7 @@ func TestConvertStandard(t *testing.T) {
 	}
 
 	// Convert the image to only use the given palette
-	imgN, err := ConvertStandard(img)
+	imgN, err := ConvertGeneral(img)
 	if err != nil {
 		t.Error(err)
 	}
@@ -138,5 +138,58 @@ func TestConvertStandard(t *testing.T) {
 
 	if err := f.Close(); err != nil {
 		t.Error(err)
+	}
+}
+
+func TestConvertMountain(t *testing.T) {
+	for _, N := range []int{8, 16, 32, 64, 128, 256} {
+
+		// Read a truecolor PNG file
+		data, err := os.Open("testdata/tm_small.png")
+		if err != nil {
+			t.Error(err)
+		}
+
+		// Decode the PNG image
+		img, err := png.Decode(data)
+		if err != nil {
+			t.Error(err)
+		}
+
+		// Generate a palette with N colors
+		pal, err := Generate(img, N)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if len(pal) != N {
+			t.Fatalf("The palette should be %d long, but it is %d long.\n", N, len(pal))
+		}
+
+		// Convert the image to only use the given palette
+		imgN, err := ConvertCustom(img, pal)
+		if err != nil {
+			t.Error(err)
+		}
+
+		_, ok := imgN.(image.PalettedImage)
+		if !ok {
+			t.Fatal("The image should be an image.PalettedImage")
+		}
+
+		// Output the indexed image
+		f, err := os.Create("testdata/tm_small" + strconv.Itoa(N) + ".png")
+		if err != nil {
+			t.Error(err)
+		}
+
+		if err := png.Encode(f, imgN); err != nil {
+			f.Close()
+			t.Error(err)
+		}
+
+		if err := f.Close(); err != nil {
+			t.Error(err)
+		}
 	}
 }

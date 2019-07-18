@@ -8,7 +8,7 @@ import (
 
 // TODO: Create a custom Paletted type, based on image/Paletted, that can take > 256 colors
 
-// Convert an image from truecolor to a <=256 color paletted image
+// ConvertCustom can convert an image from truecolor to a <=256 color paletted image
 func ConvertCustom(m image.Image, pal color.Palette) (image.Image, error) {
 	if len(pal) > 256 {
 		return nil, errors.New("can convert to a maximum of 256 colors")
@@ -39,7 +39,7 @@ func Convert(m image.Image) (image.Image, error) {
 	return ConvertCustom(m, customPalette)
 }
 
-// Convert an image from truecolor to a <=256 color paletted image, with a standard palette
-func ConvertStandard(m image.Image) (image.Image, error) {
-	return ConvertCustom(m, StandardPalette())
+// ConvertGeneral can convert an image from truecolor to a 256 color paletted image, with a general palette
+func ConvertGeneral(m image.Image) (image.Image, error) {
+	return ConvertCustom(m, GeneralPalette())
 }
