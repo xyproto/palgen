@@ -7,7 +7,6 @@ import (
 	"image/color"
 	"image/png"
 	"os"
-	"sort"
 )
 
 func main() {
@@ -65,17 +64,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Sort the palette by hue, luminance and chroma
+	palgen.Sort(pal)
+
 	// Remove the alpha
 	for i, c := range pal {
 		rgba := color.RGBAModel.Convert(c).(color.RGBA)
 		rgba.A = 255
 		pal[i] = rgba
 	}
-
-	// Sort the palette
-	spal := palgen.SortablePalette(pal)
-	sort.Sort(spal)
-	pal = color.Palette(spal)
 
 	// Output the GPL palette
 	f.Write([]byte(palgen.GPL(pal, paletteName)))

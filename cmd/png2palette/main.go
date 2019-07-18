@@ -8,7 +8,6 @@ import (
 	"image/color"
 	"image/png"
 	"os"
-	"sort"
 )
 
 func main() {
@@ -64,6 +63,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Sort the palette by hue, luminance and chroma
+	palgen.Sort(pal)
+
 	// Remove the alpha
 	for i, c := range pal {
 		rgba := color.RGBAModel.Convert(c).(color.RGBA)
@@ -71,25 +73,10 @@ func main() {
 		pal[i] = rgba
 	}
 
-	// Sort the palette
-	spal := palgen.SortablePalette(pal)
-	sort.Sort(spal)
-	pal = color.Palette(spal)
-
-	// Find the darkest color
+	// The first color is now the darkest one
 	darkIndex := uint8(0)
-	s := 0
-	minsum := 255 + 255 + 255
-	for i, c := range pal {
-		rgba := color.RGBAModel.Convert(c).(color.RGBA)
-		s = int(rgba.R + rgba.G + rgba.B)
-		if s < minsum {
-			minsum = s
-			darkIndex = uint8(i)
-		}
-	}
 
-	// Each row should be 32 wide
+	// Let each row be blocks 32 wide
 	w := 32
 	h := len(pal) / w
 	leftover := len(pal) % w
@@ -110,8 +97,8 @@ func main() {
 	// Set color for each pixel.
 	colorIndex := uint8(0)
 OUT:
-	for x := 0; x < w; x++ {
-		for y := 0; y < h; y++ {
+	for y := 0; y < h; y++ {
+		for x := 0; x < w; x++ {
 			for by := 0; by <= ph; by++ {
 				for bx := 0; bx <= pw; bx++ {
 					if bx == 0 || by == 0 || bx == pw-1 || by == ph-1 {
