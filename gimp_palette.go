@@ -7,17 +7,18 @@ import (
 	"strings"
 )
 
+const softwareID = "github.com/xyproto/palgen"
+
 // GPL converts a given palette to the GIMP Palette Format (.gpl)
 // The given name will be used as the palette name in the header
-func GPL(pal color.Palette, name string) string {
+func GPL(pal color.Palette, paletteName string) string {
 	var sb strings.Builder
 	// Prepare a header
-	sb.WriteString("GIMP Palette\n")
-	sb.WriteString("Name: ")
-	sb.WriteString(name)
+	sb.WriteString("GIMP Palette\nName: ")
+	sb.WriteString(paletteName)
+	sb.WriteString("\nColumns: 4\n# ")
+	sb.WriteString(softwareID)
 	sb.WriteString("\n")
-	sb.WriteString("Columns: 4\n")
-	sb.WriteString("# xyproto/palgen\n")
 	// Output the colors
 	for i, c := range pal {
 		cn := c.(color.RGBA)
@@ -29,6 +30,6 @@ func GPL(pal color.Palette, name string) string {
 
 // Save a palette to file in the GIMP Palette Format (.gpl)
 // The given name will be used as the palette name in the header
-func Save(pal color.Palette, filename, name string) error {
-	return ioutil.WriteFile(filename, []byte(GPL(pal, name)), 0644)
+func Save(pal color.Palette, filename, paletteName string) error {
+	return ioutil.WriteFile(filename, []byte(GPL(pal, paletteName)), 0644)
 }
