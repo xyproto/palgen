@@ -2,13 +2,10 @@ package palgen
 
 import (
 	"errors"
-	"fmt"
 	"image"
 	"image/color"
-	"io/ioutil"
 	"math"
 	"sort"
-	"strings"
 )
 
 // SortablePalette is a slice of color.Color that can be sorted with sort.Sort, by euclidian distance for R, G and B
@@ -76,42 +73,25 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 		}
 	}
 
+	// Reset the map for if colors are already appended to a slice
+	already = make(map[color.Color]bool)
+
 	// Find the median color for each intensity level
 	var pal color.Palette
 	for _, colors := range groups {
+		// Find the median color of a group of colors of a certain intensity
 		medianColor, err := Median(colors)
 		if err != nil {
 			return nil, err
 		}
-		pal = append(pal, medianColor)
+		// Add the medianColor to the palette, if it's not already there
+		alreadyColor, ok := already[medianColor]
+		if !alreadyColor || !ok {
+			pal = append(pal, medianColor)
+			already[medianColor] = true
+		}
 	}
 
 	// Return the generated palette
 	return pal, nil
-}
-
-// GPL converts a given palette to the GIMP Palette Format (.gpl)
-// The given name will be used as the palette name in the header
-func GPL(pal color.Palette, name string) string {
-	var sb strings.Builder
-	// Prepare a header
-	sb.WriteString("GIMP Palette\n")
-	sb.WriteString("Name: ")
-	sb.WriteString(name)
-	sb.WriteString("\n")
-	sb.WriteString("Columns: 4\n")
-	sb.WriteString("# xyproto/palgen\n")
-	// Output the colors
-	for i, c := range pal {
-		cn := c.(color.RGBA)
-		sb.WriteString(fmt.Sprintf("%3d %3d %3d\t%d\n", cn.R, cn.G, cn.B, i))
-	}
-	// Return the generated string
-	return sb.String()
-}
-
-// Save a palette to file in the GIMP Palette Format (.gpl)
-// The given name will be used as the palette name in the header
-func Save(pal color.Palette, filename, name string) error {
-	return ioutil.WriteFile(filename, []byte(GPL(pal, name)), 0644)
 }
