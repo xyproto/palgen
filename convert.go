@@ -1,45 +1,45 @@
 package palgen
 
 import (
+	"errors"
 	"image"
 	"image/color"
 )
 
-func quickDistance(a, b color.Color) uint {
-	c1 := a.(color.RGBA)
-	c2 := b.(color.RGBA)
-	cr := (c2.R - c1.R)
-	s := uint(cr * cr)
-	cg := (c2.G - c1.G)
-	s += uint(cg * cg)
-	cb := (c2.B - c1.B)
-	s += uint(cb * cb)
-	return s
-}
+// TODO: Create a custom Paletted type, based on image/Paletted, that can take > 256 colors
 
-// Convert an image from truecolor to a N color palette
-func Convert(img image.Image, pal color.Palette) image.Image {
-	retimg := image.NewPaletted(img.Bounds(), pal)
+// Convert an image from truecolor to a <=256 color paletted image
+func ConvertCustom(m image.Image, pal color.Palette) (image.Image, error) {
+	if len(pal) > 256 {
+		return nil, errors.New("can convert to a maximum of 256 colors")
+	}
+	palImg := image.NewPaletted(m.Bounds(), pal)
 	// For each pixel, go through each color in the palette and pick out the closest one.
-	for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y++ {
-		for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x++ {
-			imageColor := img.At(x, y)
-			//imageColor := color.RGBAModel.Convert(c).(color.RGBA)
-			newColor := imageColor
-			minD := uint(9999)
-			for _, paletteColor := range pal {
-				d := quickDistance(imageColor, paletteColor)
-				if d == 0 {
-					// Break out of the loop if the distance is 0
-					newColor = paletteColor
-					break
-				} else if d < minD {
-					minD = d
-					newColor = paletteColor
-				}
-			}
-			retimg.Set(x, y, newColor)
+	for y := m.Bounds().Min.Y; y < m.Bounds().Max.Y; y++ {
+		for x := m.Bounds().Min.X; x < m.Bounds().Max.X; x++ {
+			sourceColor := m.At(x, y)
+			colorIndex := uint8(pal.Index(sourceColor))
+			palImg.SetColorIndex(x, y, colorIndex)
 		}
 	}
-	return retimg
+	return palImg, nil
+}
+
+// Convert an image from truecolor to a 256 color paletted image, with a custom palette
+func Convert(m image.Image) (image.Image, error) {
+	customPalette, err := Generate(m, 256)
+	if err != nil {
+		return nil, err
+	}
+	// This should never happen
+	if len(customPalette) > 256 {
+		return nil, errors.New("the generated palette has too many colors")
+	}
+	// Return a new Paletted image
+	return ConvertCustom(m, customPalette)
+}
+
+// Convert an image from truecolor to a <=256 color paletted image, with a standard palette
+func ConvertStandard(m image.Image) (image.Image, error) {
+	return ConvertCustom(m, StandardPalette())
 }

@@ -1,7 +1,11 @@
 package palgen
 
+import (
+	"image/color"
+)
+
 // An OK standard palette
-var palette256 = [256][3]byte{
+var standardPalette = [256][3]byte{
 	[3]byte{0, 0, 0},
 	[3]byte{0, 0, 102},
 	[3]byte{0, 0, 204},
@@ -258,4 +262,12 @@ var palette256 = [256][3]byte{
 	[3]byte{153, 153, 153},
 	[3]byte{102, 102, 102},
 	[3]byte{51, 51, 51},
+}
+
+// Return a pretty general 256 color palette
+func StandardPalette() (pal color.Palette) {
+	for _, rgb := range standardPalette {
+		pal = append(pal, color.NRGBA{rgb[0], rgb[1], rgb[2], 255})
+	}
+	return pal
 }
