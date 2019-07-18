@@ -1,7 +1,6 @@
 package palgen
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 )
@@ -20,7 +19,27 @@ func quickDistance(a, b color.Color) uint {
 
 // Convert an image from truecolor to a N color palette
 func Convert(img image.Image, pal color.Palette) image.Image {
-	// For each pixel, go through each color in the palette and
-	fmt.Println("CONVERT!")
-	return img
+	retimg := image.NewPaletted(img.Bounds(), pal)
+	// For each pixel, go through each color in the palette and pick out the closest one.
+	for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y++ {
+		for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x++ {
+			imageColor := img.At(x, y)
+			//imageColor := color.RGBAModel.Convert(c).(color.RGBA)
+			newColor := imageColor
+			minD := uint(9999)
+			for _, paletteColor := range pal {
+				d := quickDistance(imageColor, paletteColor)
+				if d == 0 {
+					// Break out of the loop if the distance is 0
+					newColor = paletteColor
+					break
+				} else if d < minD {
+					minD = d
+					newColor = paletteColor
+				}
+			}
+			retimg.Set(x, y, newColor)
+		}
+	}
+	return retimg
 }
