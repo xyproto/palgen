@@ -49,6 +49,7 @@ if err != nil {
 | original | extracted 256 color palette |
 | :---:    | :---:                       |
 | ![png](testdata/splash.png) | ![png](testdata/splash_pal.png) |
+| ![png](testdata/tm_small.png) | ![png](testdata/tm_small_pal.png) |
 
 The palette can be extracted and outputted as a PNG image, using `png2palette`, or as a GIMP palette, using `png2gpl`.
 
