@@ -29,25 +29,20 @@ func TestConvert(t *testing.T) {
 	}
 
 	// Convert the image to only use the given palette
-	img = Convert(img, pal)
+	imgN := Convert(img, pal)
 
-	// Convert the paletted image to an RGBA image
-	imgRGBA := image.NewRGBA(img.Bounds())
-
-	for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y++ {
-		for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x++ {
-			c := img.At(x, y)
-			imgRGBA.Set(x, y, c)
-		}
+	_, ok := imgN.(image.PalettedImage)
+	if !ok {
+		t.Fatal("The image should be an image.PalettedImage")
 	}
 
-	// Output the truecolor image that represents the N-color image
-	f, err := os.Create("image.png")
+	// Output the indexed image
+	f, err := os.Create("testdata/tm256.png")
 	if err != nil {
 		t.Error(err)
 	}
 
-	if err := png.Encode(f, imgRGBA); err != nil {
+	if err := png.Encode(f, imgN); err != nil {
 		f.Close()
 		t.Error(err)
 	}
