@@ -85,7 +85,7 @@ func Median3(colors []color.Color) (color.Color, color.Color, color.Color, error
 	averageColor := color.RGBA{r, g, b, a}
 
 	// Also return the two center colors
-	return averageColor, sp[centerPos1], sp[centerPos2], nil
+	return averageColor, sp[centerPos2], sp[centerPos1], nil
 }
 
 // Generate can generate a palette with N colors, given an image
