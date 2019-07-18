@@ -9,7 +9,7 @@ import (
 
 // TODO: Create a custom Paletted type, based on image/Paletted, that can take > 256 colors
 
-// ConvertCustom can convert an image from truecolor to a <=256 color paletted image
+// ConvertCustom can convert an image from True Color to a <=256 color paletted image, given a custom palette.
 func ConvertCustom(m image.Image, pal color.Palette) (image.Image, error) {
 	if len(pal) > 256 {
 		return nil, errors.New("can convert to a maximum of 256 colors")
@@ -26,7 +26,8 @@ func ConvertCustom(m image.Image, pal color.Palette) (image.Image, error) {
 	return palImg, nil
 }
 
-// Convert an image from truecolor to a 256 color paletted image, with a custom palette
+// Convert can convert an image from True Color to a 256 color paletted image.
+// The palette is automatically extracted from the image.
 func Convert(m image.Image) (image.Image, error) {
 	customPalette, err := Generate(m, 256)
 	if err != nil {
@@ -40,12 +41,12 @@ func Convert(m image.Image) (image.Image, error) {
 	return ConvertCustom(m, customPalette)
 }
 
-// ConvertGeneral can convert an image from truecolor to a 256 color paletted image, with a general palette
+// ConvertGeneral can convert an image from True Color to a 256 color paletted image, using a general palette.
 func ConvertGeneral(m image.Image) (image.Image, error) {
 	return ConvertCustom(m, GeneralPalette())
 }
 
-// ConvertPlan9 can convert an image from truecolor to a 256 color paletted image, with the Plan9 palette
+// ConvertPlan9 can convert an image from True Color to a 256 color paletted image, using the Plan9 palette from the Go standard library.
 func ConvertPlan9(m image.Image) (image.Image, error) {
 	return ConvertCustom(m, palette.Plan9)
 }

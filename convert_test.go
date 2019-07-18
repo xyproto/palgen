@@ -9,7 +9,7 @@ import (
 )
 
 func TestConvert(t *testing.T) {
-	// Read a truecolor PNG file
+	// Read a True Color PNG file
 	data, err := os.Open("testdata/splash.png")
 	if err != nil {
 		t.Error(err)
@@ -51,7 +51,7 @@ func TestConvert(t *testing.T) {
 func TestConvertFewColors(t *testing.T) {
 	for _, N := range []int{8, 16, 32, 64, 128} {
 
-		// Read a truecolor PNG file
+		// Read a True Color PNG file
 		data, err := os.Open("testdata/splash.png")
 		if err != nil {
 			t.Error(err)
@@ -102,7 +102,7 @@ func TestConvertFewColors(t *testing.T) {
 }
 
 func TestConvertGeneral(t *testing.T) {
-	// Read a truecolor PNG file
+	// Read a True Color PNG file
 	data, err := os.Open("testdata/splash.png")
 	if err != nil {
 		t.Error(err)
@@ -144,7 +144,7 @@ func TestConvertGeneral(t *testing.T) {
 func TestConvertMountain(t *testing.T) {
 	for _, N := range []int{8, 16, 32, 64, 128, 256} {
 
-		// Read a truecolor PNG file
+		// Read a True Color PNG file
 		data, err := os.Open("testdata/tm_small.png")
 		if err != nil {
 			t.Error(err)
@@ -195,7 +195,7 @@ func TestConvertMountain(t *testing.T) {
 }
 
 func TestConvertPlan9(t *testing.T) {
-	// Read a truecolor PNG file
+	// Read a True Color PNG file
 	data, err := os.Open("testdata/splash.png")
 	if err != nil {
 		t.Error(err)

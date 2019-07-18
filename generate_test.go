@@ -7,7 +7,7 @@ import (
 )
 
 func TestGenerate(t *testing.T) {
-	// Read a truecolor PNG file
+	// Read a True Color PNG file
 	data, err := os.Open("testdata/sample.png")
 	if err != nil {
 		t.Error(err)
@@ -28,7 +28,7 @@ func TestGenerate(t *testing.T) {
 }
 
 func TestSample(t *testing.T) {
-	// Read a truecolor PNG file
+	// Read a True Color PNG file
 	data, err := os.Open("testdata/sample.png")
 	if err != nil {
 		t.Error(err)
@@ -54,7 +54,7 @@ func TestSample(t *testing.T) {
 }
 
 func TestSample2(t *testing.T) {
-	// Read a truecolor PNG file
+	// Read a True Color PNG file
 	data, err := os.Open("testdata/splash.png")
 	if err != nil {
 		t.Error(err)
@@ -80,7 +80,7 @@ func TestSample2(t *testing.T) {
 }
 
 func TestLarge(t *testing.T) {
-	// Read a truecolor PNG file
+	// Read a True Color PNG file
 	data, err := os.Open("testdata/tm.png")
 	if err != nil {
 		t.Error(err)
