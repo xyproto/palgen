@@ -114,7 +114,7 @@ func TestConvertGeneral(t *testing.T) {
 		t.Error(err)
 	}
 
-	// Convert the image to only use the given palette
+	// Convert the image to use a general 256 color palette
 	imgN, err := ConvertGeneral(img)
 	if err != nil {
 		t.Error(err)
@@ -193,3 +193,45 @@ func TestConvertMountain(t *testing.T) {
 		}
 	}
 }
+
+func TestConvertPlan9(t *testing.T) {
+	// Read a truecolor PNG file
+	data, err := os.Open("testdata/splash.png")
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Decode the PNG image
+	img, err := png.Decode(data)
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Convert the image to use the image/color/palette.Plan9 palette
+	imgN, err := ConvertPlan9(img)
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, ok := imgN.(image.PalettedImage)
+	if !ok {
+		t.Fatal("The image should be an image.PalettedImage")
+	}
+
+	// Output the indexed image
+	f, err := os.Create("testdata/splash_plan9.png")
+	if err != nil {
+		t.Error(err)
+	}
+
+	if err := png.Encode(f, imgN); err != nil {
+		f.Close()
+		t.Error(err)
+	}
+
+	if err := f.Close(); err != nil {
+		t.Error(err)
+	}
+}
+
+

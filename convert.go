@@ -4,6 +4,7 @@ import (
 	"errors"
 	"image"
 	"image/color"
+	"image/color/palette"
 )
 
 // TODO: Create a custom Paletted type, based on image/Paletted, that can take > 256 colors
@@ -42,4 +43,9 @@ func Convert(m image.Image) (image.Image, error) {
 // ConvertGeneral can convert an image from truecolor to a 256 color paletted image, with a general palette
 func ConvertGeneral(m image.Image) (image.Image, error) {
 	return ConvertCustom(m, GeneralPalette())
+}
+
+// ConvertPlan9 can convert an image from truecolor to a 256 color paletted image, with the Plan9 palette
+func ConvertPlan9(m image.Image) (image.Image, error) {
+	return ConvertCustom(m, palette.Plan9)
 }
