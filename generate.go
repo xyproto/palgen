@@ -53,6 +53,33 @@ func Median(colors []color.Color) (color.Color, error) {
 	return color.RGBA{r, g, b, a}, nil
 }
 
+// Median2 finds not the average but the median color. Returns two colors if the number of colors is even.
+func Median2(colors []color.Color) (color.Color, color.Color, error) {
+	length := len(colors)
+	if length == 0 {
+		return nil, nil, errors.New("can't find the median of an empty slice of colors")
+	}
+	if len(colors) == 1 {
+		return colors[0], colors[0], nil
+	}
+
+	// 1. Sort the colors
+	sp := SortablePalette(colors)
+	sort.Sort(sp)
+
+	// 2. Select the center one, twice, if odd
+	if length%2 != 0 {
+		centerPos := length / 2
+		// Return the center color, twice
+		return sp[centerPos], sp[centerPos], nil
+	}
+	// 3. If the numbers are even, select the two center ones and take the average of those
+	centerPos1 := (length / 2) - 1
+	centerPos2 := length / 2
+	// Return the two colors
+	return sp[centerPos1], sp[centerPos2], nil
+}
+
 // Generate can generate a palette with N colors, given an image
 func Generate(img image.Image, N int) (color.Palette, error) {
 	groups := make(map[int][]color.Color)
@@ -75,20 +102,43 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 
 	// Reset the map for if colors are already appended to a slice
 	already = make(map[color.Color]bool)
+	already2 := make(map[color.Color]bool)
+	var extrapal color.Palette
 
 	// Find the median color for each intensity level
 	var pal color.Palette
 	for _, colors := range groups {
 		// Find the median color of a group of colors of a certain intensity
-		medianColor, err := Median(colors)
+		//medianColor, err := Median(colors)
+		medianColor1, medianColor2, err := Median2(colors)
 		if err != nil {
 			return nil, err
 		}
-		// Add the medianColor to the palette, if it's not already there
-		alreadyColor, ok := already[medianColor]
+		// Add the medianColor1 to the palette, if it's not already there
+		alreadyColor, ok := already[medianColor1]
 		if !alreadyColor || !ok {
-			pal = append(pal, medianColor)
-			already[medianColor] = true
+			pal = append(pal, medianColor1)
+			already[medianColor1] = true
+		}
+		// Add the medianColor2 to the extra palette, if it's not already in it
+		alreadyColor2, ok := already2[medianColor2]
+		if !alreadyColor2 || !ok {
+			extrapal = append(extrapal, medianColor2)
+			already2[medianColor2] = true
+		}
+	}
+
+	// If there are not enough colors in the generated palette, add colors from extrapal
+	for (len(pal) < N) && (len(extrapal) > 0) {
+		// pop a color from the end of extrapal
+		lastIndex := len(extrapal) - 1
+		c := extrapal[lastIndex]
+		extrapal = extrapal[:lastIndex-1]
+		// Add the color to the palette, if it's not already there
+		alreadyColor, ok := already[c]
+		if !alreadyColor || !ok {
+			pal = append(pal, c)
+			already[c] = true
 		}
 	}
 
