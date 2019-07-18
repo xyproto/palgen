@@ -51,7 +51,9 @@ if err != nil {
 | ![png](testdata/splash.png) | ![png](testdata/splash_pal.png) |
 | ![png](testdata/tm_small.png) | ![png](testdata/tm_small_pal.png) |
 
-The palette can be extracted and outputted as a PNG image, using `png2palette`, or as a GIMP palette, using `png2gpl`.
+The palette can be extracted and saved as a PNG image, using `png2palette`, or as a GIMP palette, using `png2gpl`.
+
+Palettes can be sorted by hue, luminance and chroma, using the HCL colorspace and the [go-colorful](https://github.com/lucasb-eyer/go-colorful) package, with the included `palgen.Sort` function. The above palettes are sorted with this method.
 
 ### Image Comparison
 
