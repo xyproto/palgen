@@ -41,6 +41,8 @@ if err != nil {
 ### Included utilities
 
 * `png256`, for converting a truecolor PNG image to an indexed PNG image, with a custom palette of 256 colors.
+* `png2palette`, for extracting a palette from a truecolor PNG image and write the palette as an indexed 256 color PNG image.
+* `png2gpl`, for extracting a palette from a truecolor PNG image and write the palette as a GIMP palette file (`.gpl`).
 
 ### Image Comparison
 
