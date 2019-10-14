@@ -1,2 +1,6 @@
 # github.com/lucasb-eyer/go-colorful v1.0.2
 github.com/lucasb-eyer/go-colorful
+# github.com/peterhellberg/gfx v0.0.0-20191011152831-b91a0de61948
+github.com/peterhellberg/gfx
+# github.com/xyproto/burnpal v0.0.0-20191014130824-80030bc13096
+github.com/xyproto/burnpal
