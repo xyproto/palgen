@@ -19,3 +19,5 @@ cmd/websafe/websafe
 cmd/websafe/*.png
 cmd/plan9/plan9
 cmd/plan9/*.png
+cmd/burn/burn
+cmd/burn/*.png

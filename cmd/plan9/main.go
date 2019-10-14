@@ -20,7 +20,7 @@ func main() {
 
 	flag.StringVar(&outputFilename, "o", "plan9.png", "output PNG filename")
 	flag.BoolVar(&version, "v", false, "version")
-	flag.BoolVar(&notsorted, "n", false, "not sorted")
+	flag.BoolVar(&notsorted, "u", false, "unsorted")
 
 	flag.Parse()
 
