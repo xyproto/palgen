@@ -28,8 +28,8 @@ func GPL(pal color.Palette, paletteName string) string {
 	return sb.String()
 }
 
-// Save a palette to file in the GIMP Palette Format (.gpl)
+// SaveGPL can save a palette to file in the GIMP Palette Format (.gpl)
 // The given name will be used as the palette name in the header
-func Save(pal color.Palette, filename, paletteName string) error {
+func SaveGPL(pal color.Palette, filename, paletteName string) error {
 	return ioutil.WriteFile(filename, []byte(GPL(pal, paletteName)), 0644)
 }

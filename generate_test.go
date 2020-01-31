@@ -47,7 +47,7 @@ func TestSample(t *testing.T) {
 	}
 
 	// Output a .gpl palette file
-	err = Save(pal, "testdata/output.gpl", "From sample.png")
+	err = SaveGPL(pal, "testdata/output.gpl", "From sample.png")
 	if err != nil {
 		t.Error(err)
 	}
@@ -73,7 +73,7 @@ func TestSample2(t *testing.T) {
 	}
 
 	// Output a .gpl palette file
-	err = Save(pal, "testdata/splash.gpl", "From splash.png")
+	err = SaveGPL(pal, "testdata/splash.gpl", "From splash.png")
 	if err != nil {
 		t.Error(err)
 	}
@@ -99,7 +99,7 @@ func TestLarge(t *testing.T) {
 	}
 
 	// Output a .gpl palette file
-	err = Save(pal, "testdata/tm.gpl", "From tm.png")
+	err = SaveGPL(pal, "testdata/tm.gpl", "From tm.png")
 	if err != nil {
 		t.Error(err)
 	}
