@@ -51,17 +51,20 @@ func main() {
 	}
 	f.Close()
 
+	// Prepare an output file
+	var of *os.File
+
 	// Prepare to output the new PNG data to either stdout or to file
 	if outputFilename == "-" {
-		f = os.Stdout
+		of = os.Stdout
 	} else {
-		f, err = os.Create(outputFilename)
+		of, err = os.Create(outputFilename)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error: %s\n", err)
 			os.Exit(1)
 		}
-		defer f.Close()
 	}
+	defer of.Close()
 
 	// Create a new palette, with 256 colors (the rest of the code does not assume 256)
 	pal, err := palgen.Generate(m, 256)
@@ -81,6 +84,5 @@ func main() {
 	}
 
 	// Output the GPL palette
-	f.Write([]byte(palgen.GPL(pal, paletteName)))
-	f.Close()
+	of.Write([]byte(palgen.GPL(pal, paletteName)))
 }
