@@ -142,7 +142,7 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 	}
 
 	// If there are not enough colors in the generated palette, add colors from extrapal
-	for (len(pal) < N) && (len(extrapal) > 0) {
+	for (len(pal) < N) && (len(extrapal) > 1) {
 		// pop a color from the end of extrapal
 		lastIndex := len(extrapal) - 1
 		c := extrapal[lastIndex]
