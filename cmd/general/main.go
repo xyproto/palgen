@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/xyproto/palgen"
-	"image/color/palette"
 	"image/png"
 	"os"
+
+	"github.com/xyproto/palgen"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 		outputGPL      bool
 	)
 
-	flag.StringVar(&outputFilename, "o", "plan9.png", "output filename")
+	flag.StringVar(&outputFilename, "o", "general.png", "output filename")
 	flag.BoolVar(&version, "v", false, "version")
 	flag.BoolVar(&notsorted, "u", true, "unsorted")
 	flag.BoolVar(&outputGPL, "g", false, "output as a GPL palette")
@@ -27,19 +27,19 @@ func main() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("plan9 1.0.0")
+		fmt.Println("general 1.0.0")
 		os.Exit(0)
 	}
 
-	if outputGPL && outputFilename == "plan9.png" {
-		outputFilename = "plan9.gpl"
+	if outputGPL && outputFilename == "general.png" {
+		outputFilename = "general.gpl"
 	}
 
-	// Get the Plan 9 palette
-	pal := palette.Plan9
+	// Get the general palette
+	pal := palgen.GeneralPalette()
 
 	if outputGPL {
-		err := palgen.SaveGPL(pal, outputFilename, "plan9")
+		err := palgen.SaveGPL(pal, outputFilename, "general")
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error: %s\n", err)
 			os.Exit(1)
@@ -65,7 +65,6 @@ func main() {
 
 	// Render the palette as an image
 	palImage := palgen.Render(pal)
-
 	// Output the rendered image
 	if err := png.Encode(f, palImage); err != nil {
 		f.Close()

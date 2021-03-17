@@ -3,10 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/xyproto/palgen"
 	"image/color"
 	"image/png"
 	"os"
+
+	"github.com/xyproto/palgen"
 )
 
 func main() {
@@ -69,8 +70,10 @@ func main() {
 	// Create a new palette, with 256 colors (the rest of the code does not assume 256)
 	pal, err := palgen.Generate(m, 256)
 	if err != nil {
+		of.Close()
 		fmt.Fprintf(os.Stderr, "error: %s\n", err)
 		os.Exit(1)
+
 	}
 
 	// Sort the palette by hue, luminance and chroma
@@ -84,5 +87,11 @@ func main() {
 	}
 
 	// Output the GPL palette
-	of.Write([]byte(palgen.GPL(pal, paletteName)))
+	palString, err := palgen.GPL(pal, paletteName)
+	if err != nil {
+		of.Close()
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
+		os.Exit(1)
+	}
+	of.Write([]byte(palString))
 }
