@@ -23,3 +23,7 @@ cmd/plan9/plan9
 cmd/websafe/*.png
 cmd/plan9/*.png
 cmd/burn/*.png
+cmd/plan9/plan9.gpl
+cmd/png2gpl/burn.gpl
+cmd/burn/burn.gpl
+cmd/png2png/png2png
