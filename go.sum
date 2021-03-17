@@ -1,5 +1,5 @@
-github.com/lucasb-eyer/go-colorful v1.0.3 h1:QIbQXiugsb+q10B+MI+7DI1oQLdmnep86tWFlaaUAac=
-github.com/lucasb-eyer/go-colorful v1.0.3/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
+github.com/lucasb-eyer/go-colorful v1.2.0 h1:1nnpGOrhyZZuNyfu1QjKiUICQ74+3FNCN69Aj6K7nkY=
+github.com/lucasb-eyer/go-colorful v1.2.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
 github.com/peterhellberg/gfx v0.0.0-20191011152831-b91a0de61948 h1:rLSLJdxclbeezX/ovsa5s/uevsREEl4ghzzMQgJ4YJw=
 github.com/peterhellberg/gfx v0.0.0-20191011152831-b91a0de61948/go.mod h1:itlt/V2ABb7sDu42VXQHXmQ4KOdrEbFZDVIaHsRcwak=
 github.com/xyproto/burnpal v0.0.0-20191014130824-80030bc13096 h1:rm+b/Fh0Yv0A5HzlIC2z7bc6IIJbkG5iDFlMsL7B3Wc=
