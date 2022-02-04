@@ -1,6 +1,6 @@
 # palgen ![Build](https://github.com/xyproto/palgen/workflows/Build/badge.svg) [![GoDoc](https://godoc.org/github.com/xyproto/palgen?status.svg)](http://godoc.org/github.com/xyproto/palgen) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/palgen)](https://goreportcard.com/report/github.com/xyproto/palgen)
 
-## Render and extract palettes
+## Render, extract and save palettes
 
 Given an image, create a palette of N colors, or convert True Color images to indexed ones.
 
