@@ -15,7 +15,7 @@ Palettes can also be rendered as images.
 | ![png](testdata/splash.png) | ![png](testdata/splash_pal.png) |
 | ![png](testdata/tm_small.png) | ![png](testdata/tm_small_pal.png) |
 
-The palette can be extracted and saved as a PNG image, using `png2palette`, or as a GIMP palette, using `png2gpl`.
+The palette can be extracted and saved as a PNG image, using `png2png`, or as a GIMP palette, using `png2gpl`.
 
 Palettes can be sorted by hue, luminance and chroma, using the HCL colorspace and the [go-colorful](https://github.com/lucasb-eyer/go-colorful) package, with the included `palgen.Sort` function. The above palettes are sorted with this method.
 
@@ -34,25 +34,25 @@ Palettes can be sorted by hue, luminance and chroma, using the HCL colorspace an
 // Read a PNG file
 imageData, err := os.Open("input.png")
 if err != nil {
-	return err
+    return err
 }
 
 // Decode the PNG image
 img, err := png.Decode(imageData)
 if err != nil {
-	return err
+    return err
 }
 
 // Generate a palette with 256 colors
 pal, err := palgen.Generate(img, 256)
 if err != nil {
-	return err
+    return err
 }
 
 // Output a .gpl palette file with the name "Untitled"
 err = palgen.Save(pal, "output.gpl", "Untitled")
 if err != nil {
-	return err
+    return err
 }
 ```
 
@@ -99,6 +99,6 @@ And one extra:
 
 ### General info
 
-* Version: 3.4.0
-* License: MIT
+* Version: 1.0.0
+* License: BSD-3
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
