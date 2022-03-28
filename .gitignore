@@ -11,19 +11,25 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-testdata/*.gpl
 cmd/png256/png256
 cmd/png2gpl/png2gpl
-cmd/png2png/png2palette
 cmd/png2act/png2act
-cmd/websafe/websafe
-cmd/burn/burn
-cmd/plan9/plan9
-
-cmd/websafe/*.png
-cmd/plan9/*.png
-cmd/burn/*.png
-cmd/plan9/plan9.gpl
-cmd/png2gpl/burn.gpl
-cmd/burn/burn.gpl
 cmd/png2png/png2png
+
+cmd/png2act/*.act
+cmd/png2gpl/burn.gpl
+
+testdata/*.gpl
+
+internal/burn/burn
+internal/general/general
+internal/plan9/plan9
+internal/websafe/websafe
+internal/burn/*.png
+internal/general/*.png
+internal/plan9/*.png
+internal/websafe/*.png
+internal/burn/burn.gpl
+internal/general/burn.gpl
+internal/plan9/plan9.gpl
+internal/websafe/websafe.gpl
