@@ -8,6 +8,8 @@ import (
 	"os"
 )
 
+const versionString = "png256 1.0.0"
+
 func main() {
 
 	var (
@@ -21,13 +23,15 @@ func main() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("png256 1.0.0")
-		os.Exit(0)
+		fmt.Println(versionString)
+		return
 	}
 
 	args := flag.Args()
 	if len(args) == 0 {
-		fmt.Fprintf(os.Stderr, "An input PNG filename is required.\n")
+		fmt.Println(versionString)
+		fmt.Println("Extract an indexed palette from a given PNG file and write a new PNG file which uses that palette.")
+		fmt.Println("Example use: png256 -o output.png input.png")
 		os.Exit(1)
 	}
 

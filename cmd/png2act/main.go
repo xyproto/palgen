@@ -9,6 +9,8 @@ import (
 	"os"
 )
 
+const versionString = "png2act 1.0.0"
+
 func main() {
 
 	var (
@@ -24,13 +26,15 @@ func main() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("png2act 1.0.0")
-		os.Exit(0)
+		fmt.Println(versionString)
+		return
 	}
 
 	args := flag.Args()
 	if len(args) == 0 {
-		fmt.Fprintf(os.Stderr, "An input PNG filename is required.\n")
+		fmt.Println(versionString)
+		fmt.Println("Extract an ACT palette from a given PNG file.")
+		fmt.Println("Example use: png2act -o output.png input.png")
 		os.Exit(1)
 	}
 

@@ -10,6 +10,8 @@ import (
 	"github.com/xyproto/palgen"
 )
 
+const versionString = "png2gpl 1.0.0"
+
 func main() {
 
 	var (
@@ -25,13 +27,15 @@ func main() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("png2gpl 1.0.0")
-		os.Exit(0)
+		fmt.Println(versionString)
+		return
 	}
 
 	args := flag.Args()
 	if len(args) == 0 {
-		fmt.Fprintf(os.Stderr, "An input PNG filename is required.\n")
+		fmt.Println(versionString)
+		fmt.Println("Extract a GPL palette from a given PNG file.")
+		fmt.Println("Example use: png2gpl -o output.png input.png")
 		os.Exit(1)
 	}
 
