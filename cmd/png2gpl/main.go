@@ -10,7 +10,7 @@ import (
 	"github.com/xyproto/palgen"
 )
 
-const versionString = "png2gpl 1.0.0"
+const versionString = "png2gpl 1.0.1"
 
 func main() {
 

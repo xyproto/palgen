@@ -99,6 +99,6 @@ And one extra:
 
 ### General info
 
-* Version: 1.0.0
+* Version: 1.0.1
 * License: BSD-3
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;

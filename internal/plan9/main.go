@@ -27,7 +27,7 @@ func main() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("plan9 1.0.0")
+		fmt.Println("plan9 1.0.1")
 		os.Exit(0)
 	}
 

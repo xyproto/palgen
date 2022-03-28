@@ -29,7 +29,7 @@ func main() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("burn 1.0.0")
+		fmt.Println("burn 1.0.1")
 		os.Exit(0)
 	}
 
