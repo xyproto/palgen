@@ -5,7 +5,7 @@ import (
 )
 
 // An OK standard palette
-var generalPalette = [256][3]byte{
+var GeneralPalette256 = [256][3]byte{
 	{0, 0, 0},
 	{0, 0, 102},
 	{0, 0, 204},
@@ -266,7 +266,7 @@ var generalPalette = [256][3]byte{
 
 // GeneralPalette can return a pretty general 256 color palette
 func GeneralPalette() (pal color.Palette) {
-	for _, rgb := range generalPalette {
+	for _, rgb := range GeneralPalette256 {
 		pal = append(pal, color.NRGBA{rgb[0], rgb[1], rgb[2], 255})
 	}
 	return pal

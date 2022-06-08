@@ -5,7 +5,7 @@ import (
 )
 
 // A basic 16-color palette
-var basicPalette = [16][3]byte{
+var BasicPalette16 = [16][3]byte{
 	{0x0, 0x0, 0x0},    // 0
 	{191, 0x0, 0x0},    // 1
 	{0x0, 191, 0x0},    // 2
@@ -26,7 +26,7 @@ var basicPalette = [16][3]byte{
 
 // BasicPalette can return a basic 16 color palette
 func BasicPalette() (pal color.Palette) {
-	for _, rgb := range basicPalette {
+	for _, rgb := range BasicPalette16 {
 		pal = append(pal, color.NRGBA{rgb[0], rgb[1], rgb[2], 255})
 	}
 	return pal
