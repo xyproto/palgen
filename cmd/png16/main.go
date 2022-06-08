@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-const versionString = "png16 1.0.0"
+const versionString = "png16 1.0.1"
 
 func main() {
 
