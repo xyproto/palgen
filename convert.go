@@ -52,3 +52,8 @@ func ConvertGeneral(m image.Image) (image.Image, error) {
 func ConvertPlan9(m image.Image) (image.Image, error) {
 	return ConvertCustom(m, palette.Plan9)
 }
+
+// ConvertBasic can convert an image from True Color to a 16 color paletted image, using the 16 basic terminal colors
+func ConvertBasic(m image.Image) (image.Image, error) {
+	return ConvertCustom(m, BasicPalette())
+}
