@@ -3,9 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/xyproto/palgen"
 	"image/png"
 	"os"
+
+	"github.com/xyproto/palgen"
 )
 
 const versionString = "png256 1.0.1"
@@ -64,7 +65,7 @@ func main() {
 		defer f.Close()
 	}
 
-	// Convert the image to only use the given palette
+	// Convert the image to only use a general 256 color palette
 	indexedImage, err := palgen.Convert(m)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %s\n", err)
