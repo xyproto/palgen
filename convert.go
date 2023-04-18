@@ -14,7 +14,7 @@ import (
 // ConvertCustom can convert an image from True Color to a <=256 color paletted image, given a custom palette.
 func ConvertCustom(img image.Image, pal color.Palette) (image.Image, error) {
 	if len(pal) > 256 {
-		return nil, errors.New("can convert to a maximum of 256 colors")
+		return nil, errors.New("can reduce to a maximum of 256 colors")
 	}
 	palImg := image.NewPaletted(img.Bounds(), pal)
 	// For each pixel, go through each color in the palette and pick out the closest one.
@@ -48,7 +48,7 @@ func Convert(img image.Image) (image.Image, error) {
 // Reduce can convert an image from True Color to a N color paletted image.
 // The palette is automatically extracted from the image.
 func Reduce(img image.Image, n int) (image.Image, error) {
-	customPalette, err := Generate(img, n)
+	customPalette, err := GenerateUpTo(img, n)
 	if err != nil {
 		return nil, err
 	}
