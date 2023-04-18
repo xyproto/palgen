@@ -1,10 +1,26 @@
 package gfx
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
+
+// Stdout, and Stderr are open Files pointing to the standard output,
+// and standard error file descriptors.
+var (
+	Stdout = os.Stdout
+	Stderr = os.Stderr
+)
 
 // Log to standard output.
 func Log(format string, a ...interface{}) {
 	fmt.Printf(format+"\n", a...)
+}
+
+// Fatal prints to os.Stderr, followed by a call to os.Exit(1).
+func Fatal(v ...interface{}) {
+	fmt.Fprintln(Stderr, v...)
+	os.Exit(1)
 }
 
 // Dump all of the arguments to standard output.

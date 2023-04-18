@@ -1,3 +1,4 @@
+//go:build !tinygo
 // +build !tinygo
 
 package gfx
@@ -87,7 +88,6 @@ func (tt *targetTriangles) Draw() {
 
 				if u := IV(x, y); t.Contains(u) {
 					tt.dt.Set(x, y, t.Color(u))
-					//Mix(tt.dt, x, y, t.Color(u))
 				}
 			}
 		}

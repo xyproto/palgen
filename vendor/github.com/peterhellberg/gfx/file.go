@@ -1,16 +1,61 @@
-// +build !tinygo
-
 package gfx
 
 import (
 	"encoding/json"
+	"image"
 	"io"
 	"os"
 )
 
+// SavePNG saves an image using the provided file name.
+func SavePNG(fn string, src image.Image) error {
+	if src == nil || src.Bounds().Empty() {
+		return Error("SavePNG: empty image provided")
+	}
+
+	w, err := CreateFile(fn)
+	if err != nil {
+		return err
+	}
+	defer w.Close()
+
+	return EncodePNG(w, src)
+}
+
+// MustOpenImage decodes an image using the provided file name. Panics on error.
+func MustOpenImage(fn string) image.Image {
+	m, err := OpenImage(fn)
+	if err != nil {
+		panic(err)
+	}
+
+	return m
+}
+
+// OpenImage decodes an image using the provided file name.
+func OpenImage(fn string) (image.Image, error) {
+	r, err := OpenFile(fn)
+	if err != nil {
+		return nil, err
+	}
+	defer r.Close()
+
+	return DecodeImage(r)
+}
+
+// OpenFile opens the named file for reading.
+func OpenFile(fn string) (*os.File, error) {
+	return os.Open(fn)
+}
+
+// CreateFile creates or truncates the named file.
+func CreateFile(fn string) (*os.File, error) {
+	return os.Create(fn)
+}
+
 // ReadFile opens a file and calls the given ReadFunc.
 func ReadFile(fn string, rf ReadFunc) error {
-	f, err := os.Open(fn)
+	f, err := OpenFile(fn)
 	if err != nil {
 		return err
 	}
