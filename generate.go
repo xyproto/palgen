@@ -99,6 +99,7 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 			c := img.At(x, y)
 			gc := color.GrayModel.Convert(c).(color.Gray)
 			rgba := color.RGBAModel.Convert(c).(color.RGBA)
+			// previously N-1, now it's just N since we are removing 1 further down
 			level := int(float64(gc.Y) / (255.0 / float64(N-1)))
 			alreadyColor, ok := already[rgba]
 			if !alreadyColor || !ok {
@@ -141,6 +142,23 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 		}
 	}
 
+	// Now remove the one extra color that covers the least amount of pixels
+	minCoverage := 1.0
+	minCoverageIndex := -1
+	for i := 0; i < len(pal); i++ {
+		coverage := ColorCoverageRatio(img, color.RGBAModel.Convert(pal[i]).(color.RGBA))
+		if coverage < minCoverage {
+			minCoverage = coverage
+			minCoverageIndex = i
+		}
+	}
+	if minCoverageIndex != -1 {
+		// Replace i with the last element
+		pal[minCoverageIndex] = pal[len(pal)-1]
+		// Remove the last element
+		pal = pal[:len(pal)-1]
+	}
+
 	// If there are not enough colors in the generated palette, add colors from extrapal
 	for (len(pal) < N) && (len(extrapal) > 1) {
 		// pop a color from the end of extrapal
@@ -157,6 +175,22 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 
 	// Return the generated palette
 	return pal, nil
+}
+
+func ColorCoverageRatio(img image.Image, givenColor color.RGBA) float64 {
+	// Return the percentage of pixels that is the given color
+	foundCounter := 0
+	pixelCounter := 0
+	for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y++ {
+		for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x++ {
+			c := img.At(x, y)
+			if c == givenColor {
+				foundCounter++
+			}
+			pixelCounter++
+		}
+	}
+	return float64(foundCounter) / float64(pixelCounter)
 }
 
 // GenerateUpTo can generate a palette with up to N colors, given an image
