@@ -49,7 +49,7 @@ func TestConvert(t *testing.T) {
 }
 
 func TestConvertFewColors(t *testing.T) {
-	for _, N := range []int{8, 16, 32, 64, 128} {
+	for _, N := range []int{2, 4, 8, 16, 32, 64, 128} {
 
 		// Read a True Color PNG file
 		data, err := os.Open("testdata/splash.png")
@@ -142,7 +142,7 @@ func TestConvertGeneral(t *testing.T) {
 }
 
 func TestConvertMountain(t *testing.T) {
-	for _, N := range []int{8, 16, 32, 64, 128, 256} {
+	for _, N := range []int{2, 4, 8, 16, 32, 64, 128, 256} {
 
 		// Read a True Color PNG file
 		data, err := os.Open("testdata/tm_small.png")
@@ -179,6 +179,59 @@ func TestConvertMountain(t *testing.T) {
 
 		// Output the indexed image
 		f, err := os.Create("testdata/tm_small" + strconv.Itoa(N) + ".png")
+		if err != nil {
+			t.Error(err)
+		}
+
+		if err := png.Encode(f, imgN); err != nil {
+			f.Close()
+			t.Error(err)
+		}
+
+		if err := f.Close(); err != nil {
+			t.Error(err)
+		}
+	}
+}
+
+func TestConvertRainforest(t *testing.T) {
+	for _, N := range []int{2, 4, 8, 16, 32, 64, 128, 256} {
+
+		// Read a True Color PNG file
+		data, err := os.Open("testdata/rainforest.png")
+		if err != nil {
+			t.Error(err)
+		}
+
+		// Decode the PNG image
+		img, err := png.Decode(data)
+		if err != nil {
+			t.Error(err)
+		}
+
+		// Generate a palette with N colors
+		pal, err := Generate(img, N)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if len(pal) != N {
+			t.Fatalf("The palette should be %d long, but it is %d long.\n", N, len(pal))
+		}
+
+		// Convert the image to only use the given palette
+		imgN, err := ConvertCustom(img, pal)
+		if err != nil {
+			t.Error(err)
+		}
+
+		_, ok := imgN.(image.PalettedImage)
+		if !ok {
+			t.Fatal("The image should be an image.PalettedImage")
+		}
+
+		// Output the indexed image
+		f, err := os.Create("testdata/rainforest" + strconv.Itoa(N) + ".png")
 		if err != nil {
 			t.Error(err)
 		}

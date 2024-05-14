@@ -1,6 +1,7 @@
 package palgen
 
 import (
+	"fmt"
 	"image/png"
 	"os"
 	"testing"
@@ -102,5 +103,34 @@ func TestLarge(t *testing.T) {
 	err = SaveGPL(pal, "testdata/tm.gpl", "From tm.png")
 	if err != nil {
 		t.Error(err)
+	}
+}
+
+func TestSmallImagePalette(t *testing.T) {
+	// Read images and try to generate palettes of exactly 2 and 4 colors
+	for _, n := range []int{2, 4} {
+		for _, imageName := range []string{"rainforest", "splash", "tm"} {
+			data, err := os.Open(fmt.Sprintf("testdata/%s.png", imageName))
+			if err != nil {
+				t.Errorf("Failed to open image file: %v", err)
+			}
+			defer data.Close()
+
+			img, err := png.Decode(data)
+			if err != nil {
+				t.Errorf("Failed to decode PNG image: %v", err)
+			}
+
+			// Generate a palette of N colors
+			pal, err := Generate(img, n)
+			if err != nil {
+				t.Errorf("Failed to generate a palette of %d colors: %v", n, err)
+			}
+
+			// Check if the generated palette has exactly N colors
+			if len(pal) != n {
+				t.Errorf("Generated palette for testdata/%s.png has %d colors, expected %d", imageName, len(pal), n)
+			}
+		}
 	}
 }
