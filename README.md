@@ -103,6 +103,6 @@ And one extra:
 
 ### General info
 
-* Version: 1.5.1
+* Version: 1.6.0
 * License: BSD-3
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
