@@ -9,7 +9,7 @@ import (
 	"github.com/xyproto/palgen"
 )
 
-const versionString = "png256 1.0.1"
+const versionString = "png256 1.6.1"
 
 func main() {
 
