@@ -367,20 +367,23 @@ func GenerateUpTo(img image.Image, N int) (color.Palette, error) {
 		}
 	}
 
-	// Remove the group of colors with the least used intensity level
-	minCoverage := 1.0
-	minCoverageKey := 0
-	found := false
-	for intensityLevelKey := range groups {
-		coverage := levelCounter[intensityLevelKey] / float64(numberOfPixels)
-		if coverage < minCoverage {
-			minCoverage = coverage
-			minCoverageKey = intensityLevelKey
-			found = true
+	// Remove the group of colors with the least used intensity level,
+	// but only if there are more groups than requested colors.
+	if len(groups) > N {
+		minCoverage := 1.0
+		minCoverageKey := 0
+		found := false
+		for intensityLevelKey := range groups {
+			coverage := levelCounter[intensityLevelKey] / float64(numberOfPixels)
+			if coverage < minCoverage {
+				minCoverage = coverage
+				minCoverageKey = intensityLevelKey
+				found = true
+			}
 		}
-	}
-	if found {
-		delete(groups, minCoverageKey)
+		if found {
+			delete(groups, minCoverageKey)
+		}
 	}
 
 	// Reset the map for if colors are already appended to a slice
