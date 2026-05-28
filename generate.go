@@ -14,7 +14,8 @@ type SortablePalette []color.Color
 // Length from RGB (0, 0, 0)
 func colorLength(c color.Color) float64 {
 	r := c.(color.RGBA)
-	return math.Sqrt(float64(r.R*r.R + r.G*r.G + r.B*r.B)) // + r.A*r.A))
+	ri, gi, bi := uint32(r.R), uint32(r.G), uint32(r.B)
+	return math.Sqrt(float64(ri*ri + gi*gi + bi*bi))
 }
 
 func (a SortablePalette) Len() int           { return len(a) }
@@ -45,10 +46,10 @@ func Median(colors []color.Color) (color.Color, error) {
 	centerPos2 := length / 2
 	c1 := sp[centerPos1].(color.RGBA)
 	c2 := sp[centerPos2].(color.RGBA)
-	r := (c1.R + c2.R) / 2.0
-	g := (c1.G + c2.G) / 2.0
-	b := (c1.B + c2.B) / 2.0
-	a := (c1.A + c2.A) / 2.0
+	r := uint8((uint16(c1.R) + uint16(c2.R)) / 2)
+	g := uint8((uint16(c1.G) + uint16(c2.G)) / 2)
+	b := uint8((uint16(c1.B) + uint16(c2.B)) / 2)
+	a := uint8((uint16(c1.A) + uint16(c2.A)) / 2)
 	// return the new color
 	return color.RGBA{r, g, b, a}, nil
 }
@@ -78,10 +79,10 @@ func Median3(colors []color.Color) (color.Color, color.Color, color.Color, error
 	centerPos2 := length / 2
 	c1 := sp[centerPos1].(color.RGBA)
 	c2 := sp[centerPos2].(color.RGBA)
-	r := (c1.R + c2.R) / 2.0
-	g := (c1.G + c2.G) / 2.0
-	b := (c1.B + c2.B) / 2.0
-	a := (c1.A + c2.A) / 2.0
+	r := uint8((uint16(c1.R) + uint16(c2.R)) / 2)
+	g := uint8((uint16(c1.G) + uint16(c2.G)) / 2)
+	b := uint8((uint16(c1.B) + uint16(c2.B)) / 2)
+	a := uint8((uint16(c1.A) + uint16(c2.A)) / 2)
 	averageColor := color.RGBA{r, g, b, a}
 
 	// Also return the two center colors
