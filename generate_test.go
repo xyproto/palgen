@@ -227,3 +227,39 @@ func TestColorLengthOrdering(t *testing.T) {
 		t.Errorf("colorLength(255,255,255)=%f <= colorLength(10,10,10)=%f", brightLen, dimLen)
 	}
 }
+
+func TestDeduplicateDarkColors(t *testing.T) {
+	// Use a real image to test deduplication with a meaningful palette size
+	data, err := os.Open("testdata/splash.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer data.Close()
+
+	img, err := png.Decode(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	pal, err := Generate(img, 256)
+	if err != nil {
+		t.Fatalf("Generate returned error: %v", err)
+	}
+
+	// Count how many colors in the palette are very dark (gray < 13, i.e. 5% of 255)
+	darkCount := 0
+	for _, c := range pal {
+		gc := color.GrayModel.Convert(c).(color.Gray)
+		if gc.Y < 13 {
+			darkCount++
+		}
+	}
+
+	// The 10% darkest in a 256-color palette is ~25 entries.
+	// After deduplication, near-identical darks within 5% lightness should be merged,
+	// so we should not see an excessive number of very dark entries.
+	t.Logf("palette has %d very dark colors (gray < 13) out of %d total", darkCount, len(pal))
+	if darkCount > len(pal)/10 {
+		t.Errorf("palette has %d very dark colors (gray < 13), expected at most %d (10%% of palette)", darkCount, len(pal)/10)
+	}
+}
