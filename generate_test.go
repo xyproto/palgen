@@ -185,8 +185,8 @@ func TestGenerateSmallNBrightColors(t *testing.T) {
 	img := image.NewRGBA(image.Rect(0, 0, 4, 4))
 	bright1 := color.RGBA{220, 200, 180, 255}
 	bright2 := color.RGBA{200, 180, 220, 255}
-	for y := 0; y < 4; y++ {
-		for x := 0; x < 4; x++ {
+	for y := range 4 {
+		for x := range 4 {
 			if x < 2 {
 				img.Set(x, y, bright1)
 			} else {

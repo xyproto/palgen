@@ -265,7 +265,7 @@ func Generate(img image.Image, N int) (color.Palette, error) {
 		// Among the darkest entries, mark near-duplicates for removal
 		darkEntries := entries[:darkCount]
 		removeSet := make(map[int]bool)
-		for i := 0; i < len(darkEntries); i++ {
+		for i := range darkEntries {
 			if removeSet[darkEntries[i].index] {
 				continue
 			}
