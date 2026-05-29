@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-const versionString = "png2act 1.6.1"
+const versionString = "png2act 1.7.3"
 
 func main() {
 
